@@ -1,6 +1,10 @@
 #ifndef XV6_SIGNAL
 #define XV6_SIGNAL
-typedef void (sighandler_t)(siginfo_t) sighandler_t;
+
+#define SIGFPE 0
+#define SIGALRM 1
+
+typedef void *(sighandler_t)(siginfo_t) sighandler_t;
 
 struct {
   int signum;
