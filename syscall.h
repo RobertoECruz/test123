@@ -23,3 +23,5 @@
 #define SYS_halt   22
 #define SYS_alarm  23
 #define SYS_div0   24
+#define SYS_signal 25
+#define SYS_sigsend 26
