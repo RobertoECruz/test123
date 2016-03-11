@@ -38,5 +38,7 @@ void* memset(void*, int, uint);
 void* malloc(uint);
 void free(void*);
 int atoi(const char*);
-int register_signal_handler(int signum, sighandler_t handler);
-int signal(int signum, sighandler_t handler);
+
+int register_signal_handler(int signum, sighandler_t handler); //in proc.c to extend process
+int signal(int signum, sighandler_t handler); //in ulib.c
+

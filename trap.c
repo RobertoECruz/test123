@@ -8,6 +8,8 @@
 #include "traps.h"
 #include "spinlock.h"
 
+//check if user called alarm in any processes
+
 // Interrupt descriptor table (shared by all CPUs).
 struct gatedesc idt[256];
 extern uint vectors[];  // in vectors.S: array of 256 entry pointers
@@ -47,6 +49,7 @@ trap(struct trapframe *tf)
   }
 
   switch(tf->trapno){
+  //timer
   case T_IRQ0 + IRQ_TIMER:
     if(cpu->id == 0){
       acquire(&tickslock);
@@ -56,6 +59,17 @@ trap(struct trapframe *tf)
     }
     lapiceoi();
     break;
+    // xv6 CPU alarm
+    if(proc && (tf->cs & 3) == 3 && proc->alarmsignal == ASIG_NACTIVATED) {
+      proc->alarmticked += 1;
+      if(proc->alarmticked >= proc->alarmticks ) {
+        // send signal
+        proc->alarmticked = 0;
+        proc->alarmsignal = ASIG_ACTIVATED;
+      }
+    }
+    break;
+    
   case T_IRQ0 + IRQ_IDE:
     ideintr();
     lapiceoi();
